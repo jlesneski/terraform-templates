@@ -1,9 +1,12 @@
 parameters:
-  - name: terraformPlanArtifactName
+  - name: terraformArtifactName
     type: string
     default: 'terraform'
     displayName: 'Name of the Terraform Plan artifact'
-
+  - name: vmImage
+    type: string
+    default: 'ubuntu-latest'
+    displayName: 'Pool vmImage' 
   - name: dependsOn
     type: string
     default: ''
@@ -15,10 +18,10 @@ stages:
     jobs:
     - job: 'Create Terraform Artifact'
     pool:
-      vmImage: ubuntu-latest
+      vmImage: ${{parameters.vmImage }}
     steps:
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(Pipeline.Workspace)'
-        artifact: 'terraform'
+        artifact: ${{ parmaters.terraformArtifactName }}
         publishLocation: 'pipeline'
