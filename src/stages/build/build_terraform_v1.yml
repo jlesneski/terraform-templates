@@ -17,11 +17,11 @@ stages:
     dependsOn: ${{ parameters.dependsOn }}
     jobs:
     - job: 'Create Terraform Artifact'
+      steps:
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(Pipeline.Workspace)'
+          artifact: ${{ parmaters.terraformArtifactName }}
+          publishLocation: 'pipeline'
     pool:
       vmImage: ${{parameters.vmImage }}
-    steps:
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: '$(Pipeline.Workspace)'
-        artifact: ${{ parmaters.terraformArtifactName }}
-        publishLocation: 'pipeline'
