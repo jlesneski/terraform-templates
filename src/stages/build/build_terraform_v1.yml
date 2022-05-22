@@ -16,7 +16,7 @@ stages:
   - stage: 'Create_Terraform_Artifact'
     dependsOn: ${{ parameters.dependsOn }}
     jobs:
-    - job: 'Create Terraform Artifact'
+    - job: 'Create_Terraform_Artifact'
       steps:
       - task: PublishPipelineArtifact@1
         inputs:
