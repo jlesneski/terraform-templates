@@ -16,6 +16,6 @@ stages:
 ##### DEV #####
 - template: deploy_aws_v1.yml
   parameters:
-    environemnt: 'DEV'
+    environment: 'DEV'
 
 
