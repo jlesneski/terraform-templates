@@ -1,0 +1,24 @@
+parameters:
+  - name: terraformPlanArtifactName
+    type: string
+    default: 'terraform'
+    displayName: 'Name of the Terraform Plan artifact'
+
+  - name: dependsOn
+    type: string
+    default: ''
+    displayName: 'Name of the Stage which the Terraform Plan stage should wait on'
+
+stages:
+  - stage: 'Create Terraform Artifact'
+    dependsOn: ${{ parameters.dependsOn }}
+    jobs:
+    - job: 'Create Terraform Artifact'
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: 'terraform'
+        publishLocation: 'pipeline'
