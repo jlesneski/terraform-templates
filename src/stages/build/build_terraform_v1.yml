@@ -21,7 +21,7 @@ stages:
       - task: PublishPipelineArtifact@1
         inputs:
           targetPath: '$(Pipeline.Workspace)'
-          artifact: ${{ parmeters.terraformArtifactName }}
+          artifact: ${{ parameters.terraformArtifactName }}
           publishLocation: 'pipeline'
     pool:
       vmImage: ${{parameters.vmImage }}
