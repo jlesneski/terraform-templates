@@ -1,0 +1,61 @@
+parameters:
+  - name: terraformArtifactName
+    type: string
+    default: 'terraform'
+    displayName: 'Name of the Terraform Plan artifact'
+  - name: vmImage
+    type: string
+    default: 'ubuntu-latest'
+    displayName: 'Pool vmImage' 
+  - name: dependsOn
+    type: string
+    default: ''
+    displayName: 'Name of the Stage which the Terraform Plan stage should wait on'
+
+stages:
+- stage: 'DEV_PLAN'
+  jobs:
+    - job: Dev_PLAN
+      pool:
+        vmImage: ${{ parameters.vmImage }}
+      steps:
+      - task: DownloadBuildArtifacts@1
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: ${{ variables.ARTIFACT_NAME }}
+          downloadPath: '$(System.ArtifactsDirectory)'
+      - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+        displayName: 'Install Terraform latest'
+      - script: |
+          pwd
+          ls -laR
+        displayName: 'Command Line Script'
+      - task: TerraformTaskV3@3
+        inputs:
+          provider: 'aws'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          backendServiceAWS: 'lucidiaitAWS'
+          backendAWSBucketName: 'lucidiaterraform'
+          backendAWSKey: 'terraform/terraform.tfstate'
+      - task: TerraformTaskV3@3
+        displayName: 'TerraformWorkspace DEV'
+        inputs:
+          provider: aws
+          command: custom
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          customCommand: workspace
+          commandOptions: 'select DEV'
+          environmentServiceNameAWS: lucidiaitAWS
+          backendServiceAWS: lucidiaitAWS
+          backendAWSBucketName: lucidiaterraform
+          backendAWSKey: terraform/terraform.tfstate
+      - task: TerraformTaskV3@3
+        displayName: 'Terraform plan: aws'
+        inputs:
+          provider: aws
+          command: plan
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          environmentServiceNameAWS: lucidiaitAWS
+
