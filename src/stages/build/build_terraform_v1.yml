@@ -13,7 +13,7 @@ parameters:
     displayName: 'Name of the Stage which the Terraform Plan stage should wait on'
 
 stages:
-  - stage: 'Create Terraform Artifact'
+  - stage: 'Create_Terraform_Artifact'
     dependsOn: ${{ parameters.dependsOn }}
     jobs:
     - job: 'Create Terraform Artifact'
