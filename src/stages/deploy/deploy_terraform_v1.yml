@@ -14,7 +14,7 @@ parameters:
 
 stages:
 ##### DEV #####
-- template: src/stages/deploy/deploy_aws_v1.yml
+- template: deploy_aws_v1.yml
   parameters:
     environemnt: 'DEV'
 
