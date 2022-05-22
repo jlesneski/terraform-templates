@@ -24,4 +24,4 @@ stages:
           artifact: ${{ parameters.terraformArtifactName }}
           publishLocation: 'pipeline'
     pool:
-      vmImage: ${{parameters.vmImage }}
+      vmImage: ${{ parameters.vmImage }}
