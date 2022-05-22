@@ -56,7 +56,7 @@ stages:
           backendAWSBucketName: ${{ parameters.backendAWSBucketName }}
           backendAWSKey: ${{ parameters.backendAWSKey }}
       - task: TerraformTaskV3@3
-        displayName: 'TerraformWorkspace DEV'
+        displayName: 'TerraformWorkspace ${{ parameters.environment }}'
         inputs:
           provider: aws
           command: custom
@@ -72,6 +72,58 @@ stages:
         inputs:
           provider: aws
           command: plan
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          environmentServiceNameAWS: ${{ parameters.backendServiceAWS }}
+
+- stage: '${{ parameters.environment }}_Apply'
+  dependsOn: '${{ parameters.environment }}_PLAN'
+  jobs:
+    - deployment: ${{ parameters.environment }}
+      environment: ${{ parameters.environment }}
+    - job: 'Deploy_${{ parameters.environment }}_APPLY'
+      pool:
+        vmImage: ${{ parameters.vmImage }}
+      steps:
+      - task: DownloadBuildArtifacts@1
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName:  ${{ variables.ARTIFACT_NAME }}
+          downloadPath: '$(System.ArtifactsDirectory)'
+      - task: TerraformInstaller@0
+        displayName: 'Install Terraform latest'
+      - task: TerraformTaskV3@3
+        inputs:
+          provider: 'aws'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          backendServiceAWS: ${{ parameters.backendServiceAWS }}
+          backendAWSBucketName: ${{ parameters.backendAWSBucketName }}
+          backendAWSKey: 'terraform/terraform.tfstate'
+      - task: TerraformTaskV3@3
+        displayName: 'TerraformWorkspace ${{ parameters.environment }}'
+        inputs:
+          provider: aws
+          command: custom
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          customCommand: workspace
+          commandOptions: 'select ${{ parameters.environment }}'
+          environmentServiceNameAWS: ${{ parameters.backendServiceAWS }}
+          backendServiceAWS: ${{ parameters.backendServiceAWS }}
+          backendAWSBucketName: ${{ parameters.backendAWSBucketName }}
+          backendAWSKey: terraform/terraform.tfstate
+      - task: TerraformTaskV3@3
+        displayName: 'Terraform plan: aws'
+        inputs:
+          provider: aws
+          command: plan
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          environmentServiceNameAWS: ${{ parameters.backendServiceAWS }}
+      - task: TerraformTaskV3@3
+        displayName: 'Terraform apply: aws'
+        inputs:
+          provider: aws
+          command: apply
           workingDirectory: '$(System.DefaultWorkingDirectory)'
           environmentServiceNameAWS: ${{ parameters.backendServiceAWS }}
 
