@@ -30,6 +30,8 @@ parameters:
 
 stages:
 - stage: '${{ parameters.environment }}_PLAN'
+  ${{ if ne(parameters.dependsOn, '') }}:
+    dependsOn: ${{ parameters.dependsOn }}
   jobs:
     - job: '${{ parameters.environment }}_PLAN'
       pool:
