@@ -46,7 +46,6 @@ stages:
       - script: |
           pwd
           ls -laR
-          terraform workspace select $env_name || terraform workspace new $env_name
         displayName: 'Command Line Script'
       - task: TerraformTaskV3@3
         inputs:
@@ -68,6 +67,7 @@ stages:
           backendServiceAWS: ${{ parameters.backendServiceAWS }}
           backendAWSBucketName: ${{ parameters.backendAWSBucketName }}
           backendAWSKey: ${{ parameters.backendAWSKey }}
+        continueOnError: True
       - task: TerraformTaskV3@3
         displayName: 'TerraformWorkspace ${{ parameters.environment }}'
         inputs:
