@@ -57,19 +57,19 @@ stages:
           backendServiceAWS: ${{ parameters.backendServiceAWS }}
           backendAWSBucketName: ${{ parameters.backendAWSBucketName }}
           backendAWSKey: ${{ parameters.backendAWSKey }}
-      - task: TerraformTaskV3@3
-        displayName: 'TerraformWorkspace ${{ parameters.environment }}'
-        inputs:
-          provider: aws
-          command: custom
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
-          customCommand: workspace
-          commandOptions: 'new ${{ parameters.environment }}'
-          environmentServiceNameAWS: ${{ parameters.backendServiceAWS }}
-          backendServiceAWS: ${{ parameters.backendServiceAWS }}
-          backendAWSBucketName: ${{ parameters.backendAWSBucketName }}
-          backendAWSKey: ${{ parameters.backendAWSKey }}
-        continueOnError: True
+      #- task: TerraformTaskV3@3
+      #  displayName: 'TerraformWorkspace ${{ parameters.environment }}'
+      #  inputs:
+      #    provider: aws
+      #    command: custom
+      #    workingDirectory: '$(System.DefaultWorkingDirectory)'
+      #    customCommand: workspace
+      #    commandOptions: 'new ${{ parameters.environment }}'
+      #    environmentServiceNameAWS: ${{ parameters.backendServiceAWS }}
+      #    backendServiceAWS: ${{ parameters.backendServiceAWS }}
+      #    backendAWSBucketName: ${{ parameters.backendAWSBucketName }}
+      #    backendAWSKey: ${{ parameters.backendAWSKey }}
+      #  continueOnError: True
       - task: TerraformTaskV3@3
         displayName: 'TerraformWorkspace ${{ parameters.environment }}'
         inputs:
