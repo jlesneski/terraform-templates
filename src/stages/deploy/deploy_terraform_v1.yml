@@ -17,5 +17,10 @@ stages:
 - template: deploy_aws_v1.yml
   parameters:
     environment: 'DEV'
+##### QA #####
+- template: deploy_aws_v1.yml
+  parameters:
+    environment: 'QA'
+    dependsOn: Deploy_DEV_APPLY
 
 

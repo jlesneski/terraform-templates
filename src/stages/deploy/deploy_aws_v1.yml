@@ -30,6 +30,7 @@ parameters:
 
 stages:
 - stage: '${{ parameters.environment }}_PLAN'
+  dependsOn: $${{ parameters.dependsOn }}
   jobs:
     - job: '${{ parameters.environment }}_PLAN'
       pool:
