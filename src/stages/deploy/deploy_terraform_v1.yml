@@ -22,10 +22,8 @@ stages:
   parameters:
     environment: 'QA'
     dependsOn: 'DEV_Apply'
-##### QA #####
+##### PROD #####
 - template: deploy_aws_v1.yml
   parameters:
     environment: 'PROD'
     dependsOn: 'QA_Apply'
-
-
