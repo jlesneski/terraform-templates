@@ -9,7 +9,7 @@ parameters:
     displayName: 'Pool vmImage' 
   - name: dependsOn
     type: string
-    default: ''
+    default: null
     displayName: 'Name of the Stage which the Terraform Plan stage should wait on'
   - name: environment
     type: string
