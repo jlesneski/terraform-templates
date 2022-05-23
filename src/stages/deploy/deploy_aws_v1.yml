@@ -46,6 +46,7 @@ stages:
       - script: |
           pwd
           ls -laR
+          terraform workspace select $env_name || terraform workspace new $env_name
         displayName: 'Command Line Script'
       - task: TerraformTaskV3@3
         inputs:
@@ -61,8 +62,7 @@ stages:
           provider: aws
           command: custom
           workingDirectory: '$(System.DefaultWorkingDirectory)'
-          customCommand: workspace
-          commandOptions: 'select ${{ parameters.environment }}'
+          customCommand: workspace select ${{ parameters.environment }} || workspace new ${{ parameters.environment }}
           environmentServiceNameAWS: ${{ parameters.backendServiceAWS }}
           backendServiceAWS: ${{ parameters.backendServiceAWS }}
           backendAWSBucketName: ${{ parameters.backendAWSBucketName }}
