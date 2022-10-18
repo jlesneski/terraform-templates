@@ -1,0 +1,30 @@
+parameters:
+  - name: terraformArtifactName
+    type: string
+    default: 'terraform'
+    displayName: 'Name of the Terraform Plan artifact'
+  - name: vmImage
+    type: string
+    default: 'ubuntu-latest'
+    displayName: 'Pool vmImage' 
+  - name: dependsOn
+    type: string
+    default: ''
+    displayName: 'Name of the Stage which the Terraform Plan stage should wait on'
+
+stages:
+  - stage: 'Create_Terraform_Artifact'
+    dependsOn: ${{ parameters.dependsOn }}
+    jobs:
+    - job: 'Create_Terraform_Artifact'
+      steps:
+      - task: CmdLine@2
+        inputs:
+          script: 'chmod 600 $(Pipeline.Workspace)/ansible/ssh/id_rsa'
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(Pipeline.Workspace)'
+          artifact: ${{ parameters.terraformArtifactName }}
+          publishLocation: 'pipeline'
+    pool:
+      vmImage: ${{ parameters.vmImage }}
