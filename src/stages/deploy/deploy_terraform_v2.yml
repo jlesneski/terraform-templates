@@ -17,17 +17,18 @@ stages:
 - template: deploy_aws_v1.yml
   parameters:
     environment: 'DEV'
-    backendServiceAWS: 'tandlterraform'
+    backendAWSBucketName: 'tandlterraform'
 
 ##### QA #####
 - template: deploy_aws_v1.yml
   parameters:
     environment: 'QA'
     dependsOn: 'DEV_Apply'
-    backendServiceAWS: 'tandlterraform'
+    backendAWSBucketName: 'tandlterraform'
+
 ##### PROD #####
 - template: deploy_aws_v1.yml
   parameters:
     environment: 'PROD'
     dependsOn: 'QA_Apply'
-    backendServiceAWS: 'tandlterraform'
+    backendAWSBucketName: 'tandlterraform'
