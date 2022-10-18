@@ -20,7 +20,7 @@ stages:
       steps:
       - task: CmdLine@2
         inputs:
-          script: 'chmod 600 $(Pipeline.Workspace)/ansible/ssh/id_rsa'
+          script: 'pwd; ls -la; ls -la $(Pipeline.Workspace)/s/ansible/ssh/id_rsa;chmod 600 $(Pipeline.Workspace)/s/ansible/ssh/id_rsa'
       - task: PublishPipelineArtifact@1
         inputs:
           targetPath: '$(Pipeline.Workspace)'
