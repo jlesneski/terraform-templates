@@ -18,12 +18,6 @@ stages:
     jobs:
     - job: 'Create_Terraform_Artifact'
       steps:
-      - task: CmdLine@2
-        inputs:
-          script: 'chmod 600 ansible/ssh/id_rsa'
-      - task: CmdLine@2
-        inputs:
-          script: 'ls -la ansible/ssh/id_rsa'
       - task: PublishPipelineArtifact@1
         inputs:
           targetPath: '$(Pipeline.Workspace)'
