@@ -1,0 +1,33 @@
+parameters:
+  - name: terraformArtifactName
+    type: string
+    default: 'terraform'
+    displayName: 'Name of the Terraform Plan artifact'
+  - name: vmImage
+    type: string
+    default: 'ubuntu-latest'
+    displayName: 'Pool vmImage' 
+  - name: dependsOn
+    type: string
+    default: ''
+    displayName: 'Name of the Stage which the Terraform Plan stage should wait on'
+
+stages:
+##### DEV #####
+- template: deploy_aws_v1.yml
+  parameters:
+    environment: 'DEV'
+    backendServiceAWS: 'tandlterraform'
+
+##### QA #####
+- template: deploy_aws_v1.yml
+  parameters:
+    environment: 'QA'
+    dependsOn: 'DEV_Apply'
+    backendServiceAWS: 'tandlterraform'
+##### PROD #####
+- template: deploy_aws_v1.yml
+  parameters:
+    environment: 'PROD'
+    dependsOn: 'QA_Apply'
+    backendServiceAWS: 'tandlterraform'
